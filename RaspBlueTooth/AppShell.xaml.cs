@@ -28,7 +28,7 @@ namespace RaspBlueTooth
                 new NavMenuItem()
                 {
                     Symbol = Symbol.Contact,
-                    Label = "Page1",
+                    Label = "BT Connection",
                     DestinationPage = typeof(Views.Page1)
                 },
                 new NavMenuItem()
