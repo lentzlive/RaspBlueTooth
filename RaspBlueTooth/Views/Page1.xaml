@@ -10,13 +10,13 @@
     <Page.Resources>
         <CollectionViewSource x:Name="PairedDevices"/>
     </Page.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
           EntranceNavigationTransitionInfo.IsTargetElement="True">
 
 
         <StackPanel Orientation="Vertical">
-            <TextBlock x:Name="MyTitle" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="Wrap" Text="Universal Windows Generic Bluetooth Serial Test App " VerticalAlignment="Top" Width="800"/>
+            <TextBlock x:Name="MyTitle" HorizontalAlignment="Left" Height="23" Margin="110,10,0,10" TextWrapping="Wrap" Text="Universal Windows Generic Bluetooth Serial Test App " VerticalAlignment="Top" Width="432"/>
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="ID" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="Wrap" Text="Id: " VerticalAlignment="Top" Width="28"/>

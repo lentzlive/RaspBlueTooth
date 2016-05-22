@@ -58,7 +58,7 @@ namespace RaspBlueTooth.Views
             try
             {
                 DeviceInformationCollection DeviceInfoCollection = await DeviceInformation.FindAllAsync(RfcommDeviceService.GetDeviceSelector(RfcommServiceId.SerialPort));
-                
+
                 var numDevices = DeviceInfoCollection.Count();
 
                 // By clearing the backing data, we are effectively clearing the ListBox
@@ -139,7 +139,7 @@ namespace RaspBlueTooth.Views
                 _socket = null;
             }
         }
-        
+
         private void ConnectDevices_DoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
         {
             PairedDeviceInfo pairedDevice = (PairedDeviceInfo)ConnectDevices.SelectedItem;
@@ -176,6 +176,7 @@ namespace RaspBlueTooth.Views
                         break;
                     case "Clear Send":
                         this.textBoxRecvdText.Text = "";
+                        recvdtxt = "";
                         break;
                     case "Start Recv":
                         this.buttonStartRecv.IsEnabled = false;
@@ -191,7 +192,7 @@ namespace RaspBlueTooth.Views
                         InitializeRfcommDeviceService();
                         break;
                     case "Start Process":
-                        timerDataProcess = ThreadPoolTimer.CreatePeriodicTimer(dataProcessTick, TimeSpan.FromMilliseconds(Convert.ToInt32(4000)));
+                        timerDataProcess = ThreadPoolTimer.CreatePeriodicTimer(dataProcessTick, TimeSpan.FromMilliseconds(Convert.ToInt32(100)));
                         break;
                 }
             }
@@ -199,34 +200,40 @@ namespace RaspBlueTooth.Views
 
         private async void dataProcessTick(ThreadPoolTimer timer)
         {
-            string str1 = recvdtxt.Substring(4, 2);
-            //if(str1.Substring(0,1)=="0")
-            //    str1 = str1.Substring(1);
-            string str2 = recvdtxt.Substring(6, 2);
-            //if (str2.Substring(0, 1) == "0")
-            //    str2 = str2.Substring(1);
-            string str3 = recvdtxt.Substring(8, 2);
-            //if (str3.Substring(0, 1) == "0")
-            //    str3 = str3.Substring(1);
-            string str4 = recvdtxt.Substring(10, 2);
-            //if (str4.Substring(0, 1) == "0")
-            //    str4 = str4.Substring(1);
-
-            double pm25 = (Convert.ToInt32(str1, 16) + (Convert.ToInt32(str2, 16)) * 256) / 10.0;
-            double pm10 = (Convert.ToInt32(str3, 16) + (Convert.ToInt32(str4, 16)) * 256) / 10.0;
-
-            await textBoxPM25Text.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+            try
             {
-                textBoxPM25Text.Text = Convert.ToString(pm25);
+
+                string str1 = recvdtxt.Substring(4, 2);
+                //if(str1.Substring(0,1)=="0")
+                //    str1 = str1.Substring(1);
+                string str2 = recvdtxt.Substring(6, 2);
+                //if (str2.Substring(0, 1) == "0")
+                //    str2 = str2.Substring(1);
+                string str3 = recvdtxt.Substring(8, 2);
+                //if (str3.Substring(0, 1) == "0")
+                //    str3 = str3.Substring(1);
+                string str4 = recvdtxt.Substring(10, 2);
+                //if (str4.Substring(0, 1) == "0")
+                //    str4 = str4.Substring(1);
+
+                double pm25 = (Convert.ToInt32(str1, 16) + (Convert.ToInt32(str2, 16)) * 256) / 10.0;
+                double pm10 = (Convert.ToInt32(str3, 16) + (Convert.ToInt32(str4, 16)) * 256) / 10.0;
+
+                await textBoxPM25Text.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    textBoxPM25Text.Text = Convert.ToString(pm25);
+                }
+                );
+                await textBoxPM10Text.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
+                {
+                    textBoxPM10Text.Text = FromHexString(recvdtxt);// Convert.ToString(pm10);
+                }
+                );
+                string newstr = recvdtxt.Substring(20, 20);
+                recvdtxt = "";
             }
-            );
-            await textBoxPM10Text.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                textBoxPM10Text.Text = Convert.ToString(pm10);
-            }
-            );
-            string newstr = recvdtxt.Substring(20, 20);
-            recvdtxt = newstr;
+            catch (Exception e)
+            { }
         }
 
 
@@ -322,6 +329,10 @@ namespace RaspBlueTooth.Views
                         await ReadAsync(ReadCancellationTokenSource.Token);
                     }
                 }
+                else
+                {
+                    recvdtxt = "";
+                }
             }
             catch (Exception ex)
             {
@@ -391,7 +402,8 @@ namespace RaspBlueTooth.Views
                     }
                     //dataReaderObject.ReadBytes();
                     System.Diagnostics.Debug.WriteLine(recvdtxt);
-                    this.textBoxRecvdText.Text = recvdtxt;
+                    this.textBoxRecvdText.Text = recvdtxt;// FromHexString( recvdtxt);
+                    //recvdtxt = "";
                     /*if (_Mode == Mode.JustConnected)
                     {
                         if (recvdtxt[0] == ArduinoLCDDisplay.keypad.BUTTON_SELECT_CHAR)
@@ -423,6 +435,17 @@ namespace RaspBlueTooth.Views
             }
         }
 
+        public static string FromHexString(string hexString)
+        {
+            var bytes = new byte[hexString.Length / 2];
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                bytes[i] = Convert.ToByte(hexString.Substring(i * 2, 2), 16);
+            }
+
+            return Encoding.UTF8.GetString(bytes); // returns: "Hello world" for "48656C6C6F20776F726C64"
+        }
+
         /// <summary>
         /// CancelReadTask:
         /// - Uses the ReadCancellationTokenSource to cancel read operations
@@ -434,6 +457,7 @@ namespace RaspBlueTooth.Views
                 if (!ReadCancellationTokenSource.IsCancellationRequested)
                 {
                     ReadCancellationTokenSource.Cancel();
+                    recvdtxt = "";
                 }
             }
         }
