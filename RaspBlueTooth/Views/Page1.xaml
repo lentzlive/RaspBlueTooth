@@ -62,11 +62,11 @@
                 <TextBlock x:Name="textBoxRecvdText" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="800" Height="Auto" ToolTipService.ToolTip=""/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PM25Text" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap" Text="PM2.5: " VerticalAlignment="Top" Width="50"/>
+                <TextBlock x:Name="PM25Text" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap" Text="Serial: " VerticalAlignment="Top" Width="50"/>
                 <TextBlock x:Name="textBoxPM25Text" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="800" Height="Auto" ToolTipService.ToolTip=""/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock x:Name="PM10Text" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap" Text="PM10: " VerticalAlignment="Top" Width="50"/>
+                <TextBlock x:Name="PM10Text" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap" Text="Value: " VerticalAlignment="Top" Width="50"/>
                 <TextBlock x:Name="textBoxPM10Text" HorizontalAlignment="Left" Margin="10" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="800" Height="Auto" ToolTipService.ToolTip=""/>
             </StackPanel>
         </StackPanel>
