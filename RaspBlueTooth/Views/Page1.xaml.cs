@@ -126,6 +126,8 @@ namespace RaspBlueTooth.Views
                     this.buttonStartRecv.IsEnabled = true;
                     this.buttonStartProcess.IsEnabled = true;
                     this.buttonStopRecv.IsEnabled = false;
+                    this.StartStopReceive.IsEnabled = true;
+                    
                     string msg = String.Format("Connected to {0}!", _socket.Information.RemoteAddress.DisplayName);
                     //MessageDialog md = new MessageDialog(msg, Title);
                     System.Diagnostics.Debug.WriteLine(msg);
@@ -168,6 +170,8 @@ namespace RaspBlueTooth.Views
                         this.buttonSend.IsEnabled = false;
                         this.buttonStartRecv.IsEnabled = false;
                         this.buttonStopRecv.IsEnabled = false;
+                        this.StartStopReceive.IsEnabled = false;
+
                         break;
                     case "Send":
                         //await _socket.OutputStream.WriteAsync(OutBuff);
@@ -480,6 +484,40 @@ namespace RaspBlueTooth.Views
             public DeviceInformation DeviceInfo { get; private set; }
         }
 
+        private void StartStopReceive_Toggled(object sender, RoutedEventArgs e)
+        {
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                if (toggleSwitch.IsOn == true)
+                {
+                    Listen();
+                }
+                else
+                {
+                    CancelReadTask();
+                }
+            }
+        }
 
+        private void StartProcess_Toggled(object sender, RoutedEventArgs e)
+        {
+
+
+            ToggleSwitch toggleSwitch = sender as ToggleSwitch;
+            if (toggleSwitch != null)
+            {
+                if (toggleSwitch.IsOn == true)
+                {
+                    timerDataProcess = ThreadPoolTimer.CreatePeriodicTimer(dataProcessTick, TimeSpan.FromMilliseconds(Convert.ToInt32(100)));
+                }
+                else
+                {
+                    CancelReadTask();
+                }
+            }
+
+           
+        }
     }
 }
