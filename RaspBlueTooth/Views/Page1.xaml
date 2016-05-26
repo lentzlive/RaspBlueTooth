@@ -16,8 +16,8 @@
 
 
         <StackPanel Orientation="Vertical">
-            <TextBlock x:Name="MyTitle" HorizontalAlignment="Left" Height="23" Margin="110,10,0,10" TextWrapping="Wrap" Text="Universal Windows Generic Bluetooth Serial Test App " VerticalAlignment="Top" Width="432"/>
-            <StackPanel Orientation="Vertical">
+            <TextBlock x:Name="MyTitle" HorizontalAlignment="Left" Height="33" Margin="60,10,0,10" TextWrapping="Wrap" Text="Universal Windows Generic Bluetooth Serial Test App " VerticalAlignment="Top" Width="416" Foreground="#FFFB1818" FontSize="16" FontWeight="Bold"/>
+            <StackPanel Orientation="Vertical" BorderBrush="Azure">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="ID" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="Wrap" Text="Id: " VerticalAlignment="Top" Width="28"/>
                     <TextBlock x:Name="TxtBlock_SelectedID" HorizontalAlignment="Left" Height="25" Margin="10" TextWrapping="Wrap" Text="Id" VerticalAlignment="Top" Width="956"/>
@@ -32,10 +32,9 @@
                 <ToggleSwitch IsEnabled="False" Header="Start Process" Margin="10" VerticalAlignment="Top" x:Name="StartProcess" x:Uid="tgsRecv" Toggled="StartProcess_Toggled"  />
 
             </StackPanel>
-                <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
                 <Button x:Name="buttonRefresh" Content="Refresh" HorizontalAlignment="Left" Height="49" Margin="10" VerticalAlignment="Top" Width="102" Click="button_Click" IsEnabled="True"/>
                 <Button x:Name="buttonDisconnect" Content="Disconnect" HorizontalAlignment="Left" Height="49" Margin="10" VerticalAlignment="Top" Width="102" Click="button_Click" IsEnabled="False"/>
-                <Button x:Name="buttonSend" Content="Send" HorizontalAlignment="Left" Height="49" Margin="10" VerticalAlignment="Top" Width="102" Click="button_Click"  IsEnabled="False"/>
                 <Button x:Name="buttonClearSendText" Content="Clear Send" HorizontalAlignment="Left" Height="49" Margin="10" VerticalAlignment="Top" Width="102" Click="button_Click" IsEnabled="True"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
@@ -54,8 +53,15 @@
                 </ListBox.ItemTemplate>
             </ListBox>
             <StackPanel Orientation="Horizontal">
+                <ToggleSwitch IsEnabled="True" Header="Light ON/OFF" Margin="10" VerticalAlignment="Top" x:Name="tgsLightOn" x:Uid="tgsLightOn" Toggled="tgsLightOn_Toggled"  />
+
+
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="SendText" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap"  Text="Send: " VerticalAlignment="Top" Width="50"/>
-                <TextBox x:Name="textBoxSendText" Text="Send Me" HorizontalAlignment="Left" Height="20" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" Width="800" ToolTipService.ToolTip="" AcceptsReturn="True"/>
+                <TextBox x:Name="textBoxSendText" Text="Send Me" HorizontalAlignment="Left" Height="40" Margin="10" TextWrapping="Wrap"  VerticalAlignment="Top" Width="158" ToolTipService.ToolTip="" AcceptsReturn="True"/>
+                <Button x:Name="buttonSend" Content="Send" HorizontalAlignment="Left" Height="40" Margin="10" VerticalAlignment="Top" Width="102" Click="button_Click"  IsEnabled="False"/>
+
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock x:Name="RecvdText" HorizontalAlignment="Left" Height="23" Margin="10" TextWrapping="NoWrap" Text="Recvd: " VerticalAlignment="Top" Width="50"/>

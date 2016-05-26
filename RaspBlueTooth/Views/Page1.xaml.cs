@@ -519,5 +519,10 @@ namespace RaspBlueTooth.Views
 
            
         }
+
+        private void tgsLightOn_Toggled(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
